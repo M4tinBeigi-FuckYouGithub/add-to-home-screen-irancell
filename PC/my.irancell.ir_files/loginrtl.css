@@ -1,0 +1,614 @@
+@import url("commonrtl.css");
+
+@media (min-width: 630px) {
+	#mtnImage {
+		width: 5em;
+    padding: 0.5em;
+    padding-left: 1em;
+	}
+  #mtnEcare {
+    font-size: 1.2em;
+  }
+  #otpOptionButton {
+    font-size: 14px;
+  }
+	#dropdownlang{
+		max-width: 100%;
+		min-width:72%;
+		padding:0%;
+	}
+	#onlyMobile {
+		display: none;
+	}
+  #lang {
+    margin-top: 1.5em;
+  }
+	#dropDownButton1 {
+		margin-top: 6%;
+	}
+	#topRow {
+		height: 4em;
+	}
+	#engForm, #farsiForm {
+		margin-top: 1.2em;
+	}
+	#portButton {
+		height: 3.2em;
+		font-weight: 600;
+	}
+	#portirancellDiv {
+		margin-top: 0.65em;
+	}
+	#HomeUsersText, #CorporateSolutionText, #CoveragemapsText, #DownloadLinkText {
+		margin-top: 2.2em;
+		font-size: 0.7em;
+	}
+	#listChoice1 {
+		font-size: 0.7em;
+	}
+	body {
+		background-image: url("/images/Bgimage.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		position: center center;
+		background-attachment: fixed;
+		min-height: 100%;
+		max-height: 100%;
+		min-width: 100%;
+	}
+}
+@media (min-width: 867px) {
+	#HomeUsersText, #CorporateSolutionText, #CoveragemapsText, #DownloadLinkText {
+		margin-top: 1.6em;
+		font-size: 0.85em;
+	}
+	#listChoice1 {
+		font-size: 0.85em;
+	}
+}
+
+@media (min-width: 1000px) {
+	#portButton{
+		display: none;
+	}
+	.box1 {
+	  	position: relative;
+	    
+	    background: #EEE;
+	}
+	.ribbon1 {
+	      position: absolute;
+    right: 93%;
+    top: -118px;
+    z-index: 1;
+    overflow: hidden;
+    width: 134px;
+    height: 107px;
+    text-align: left;
+	}
+	.ribbon1 span {
+	  font-size: 11px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: left;
+    line-height: 27px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    width: 211px;
+    display: block;
+    background: #C8000A;
+    background: linear-gradient(#C8000A 0%, #C8000A 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 19px;
+    left: -21px;
+
+	}
+	.ribbon1 span::before {
+	  content: "";
+	  position: absolute; left: 0px; top: 100%;
+	  z-index: -1;
+	  border-left: 3px solid #79A70A;
+	  border-right: 3px solid transparent;
+	  border-bottom: 3px solid transparent;
+	  border-top: 3px solid #79A70A;
+	}
+	.ribbon1 span::after {
+	  content: "";
+	  position: absolute; right: 0px; top: 100%;
+	  z-index: -1;
+	  border-left: 3px solid transparent;
+	  border-right: 3px solid #79A70A;
+	  border-bottom: 3px solid transparent;
+	  border-top: 3px solid #79A70A;
+	}
+}
+
+
+
+@media (max-width: 1000px) {
+	.box1 {
+	  	position: relative;
+	    display: none;
+	    background: #EEE;
+	}
+	.ribbon1 {
+	      position: absolute;
+    right: 74%;
+    top: -118px;
+    z-index: 1;
+    overflow: hidden;
+    width: 134px;
+    height: 107px;
+    text-align: right;
+	}
+	.ribbon1 span {
+	  font-size: 11px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 27px;
+    
+    width: 211px;
+    display: block;
+    background: #C8000A;
+    background: linear-gradient(#C8000A 0%, #C8000A 100%);
+    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+    position: absolute;
+    top: 83px;
+    right: -21px;
+
+	}
+	.ribbon1 span::before {
+	  content: "";
+	  position: absolute; left: 0px; top: 100%;
+	  z-index: -1;
+	  border-left: 3px solid #79A70A;
+	  border-right: 3px solid transparent;
+	  border-bottom: 3px solid transparent;
+	  border-top: 3px solid #79A70A;
+	}
+	.ribbon1 span::after {
+	  content: "";
+	  position: absolute; right: 0px; top: 100%;
+	  z-index: -1;
+	  border-left: 3px solid transparent;
+	  border-right: 3px solid #79A70A;
+	  border-bottom: 3px solid transparent;
+	  border-top: 3px solid #79A70A;
+	}
+}
+
+@media (max-width: 630px) {
+	#mtnImage {
+		width: 4em;
+    padding: 0.3em;
+    padding-left: 0.7em;
+	}
+  #mtnEcare {
+    font-size: 0.7em;
+  }
+  #otpOptionButton {
+    font-size: 12px;
+  }
+	#dropdownlang{
+		min-width:92%;
+		padding: 0%;
+	}
+  #lang {
+    margin-top: 1.5em;
+  }
+	#dropDownButton1 {
+		margin-top: 4%;
+	}
+	#topRow {
+		height: 3em;
+	}
+	#engForm, #farsiForm {
+		margin-top: 0.8em;
+	}
+	#portButton {
+		height: 3em;
+		padding: 0.5em;
+		font-weight: 600;
+		font-size: 0.75em;
+	}
+	#portirancellDiv {
+		margin-top: 0.65em;
+	}
+	#HomeUsersText, #CorporateSolutionText, #CoveragemapsText, #DownloadLinkText {
+		margin-top: 2em;
+		font-size: 0.55em;
+	}
+	#DownloadLinkText {
+		display: none;
+	}
+	#listChoice1 {
+		font-size: 0.55em;
+	}
+	body {
+		background-image: url("/images/Bgimage.png");
+		background-size: auto 100vh;
+		background-repeat: no-repeat;
+		position: center center;
+		background-attachment: fixed;
+		min-height: 100%;
+		max-height: 100%;
+		min-width: 100%;
+	}
+	#bodyRow {
+		margin: 0%;
+	}
+}
+@media (max-width:470px) {
+  #mtnImage {
+    width:3em;
+    padding: 0.3em;
+  }
+  #mtnEcare {
+    font-size: 0.7em;
+  }
+  #lang {
+    margin-top: 0.75em;
+  }
+	#portButton {
+		height: 2.5em;
+		padding: 0.1em;
+		font-weight: 600;
+	}
+	#portirancellDiv {
+		margin-top: 0.7em;
+	}
+	body {
+		background-image: url("/images/Bgimage.png");
+		background-size: auto 100vh;
+		background-repeat: no-repeat;
+		position: center center;
+		background-attachment: fixed;
+		min-height: 100%;
+		max-height: 100%;
+		min-width: 100%;
+	}
+}
+/*
+@media (max-width:412px) {
+	body {
+		background-image: url("/images/LoginMobile-BG-FA.jpg");
+		background-size: auto 100vh;
+		background-repeat: no-repeat;
+		position: center center;
+		background-attachment: fixed;
+		min-height: 100%;
+		max-height: 100%;
+		min-width: 100%;
+	}
+}
+@media (max-width:372px) {
+	body {
+		background-image: url("/images/LoginMobileSmall-BG-FA.jpg");
+		background-size: auto 100vh;
+		background-repeat: no-repeat;
+		position: center center;
+		background-attachment: fixed;
+		min-height: 100%;
+		max-height: 100%;
+		min-width: 100%;
+	}
+}
+*/
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.shadow {
+  -webkit-box-shadow: 0 2px  #cccccc;
+     -moz-box-shadow: 0 2px  #cccccc;
+          box-shadow: 0 2px  #cccccc;
+}
+#lang {
+	background-color: #e7e7e7;
+	color: #000000;
+  width: 92%;
+  border-radius: 3px;
+}
+
+select {
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
+
+body {
+	background-color:#efefef;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+#topRow {
+	background-color: rgba(0,0,0,0.8);
+	min-width:100%;
+}
+#secondRow {
+	background-color: rgba(0,0,0,0.5);
+	height:10%;
+	min-width:100%;
+}
+#mtnLogo {
+  padding: 0%;
+  background-color: rgba(0,0,0,0.005);
+}
+#mtnImage {
+	background-color: rgba(0,0,0,0.005);
+}
+#mtnEcare {
+	padding:0%;
+  display: inline-block;
+	color:#ffffff;
+	font-weight: 600;
+}
+#dropDownButton1{
+	background-color: #4b4b4b;
+	color: #fff;
+	border-radius: 0;
+}
+
+#NoPadding {
+	padding:0%;
+}
+#loginRow{
+	margin: 0%;
+}
+#DivColLogin {
+	padding:0%;
+}
+#panel_styleLogin {
+	margin-top: 7em;
+	border-radius: 0;
+	border: none;
+}
+#panel_heading_styleLogin {
+	background-color:#f5f5f5;
+}
+#home_panel_headerLogin {
+	margin-top: 1%;
+	font-weight: 600;
+	font-size: 1.375em;
+  color: #333333;
+}
+#home_panel_BackButton {
+	font-weight: 600;
+	font-size: 1em;
+  color: #333333;
+	padding: 0%;
+	margin: 0%;
+	margin-top: 2%;
+	cursor: pointer;
+}
+#bodyLogin {
+	line-height:100%;
+	padding: 0%;
+}
+#mobileVerifyText, #mobileForgotText, #registerMobileText {
+	margin-bottom:0.5em;
+	margin-top:3%;
+	font-size:70%;
+  color: #333333;
+}
+#inputFieldMSISDN, #inputFieldUsername, #inputFieldPassword, #inputFieldOtp, #inputForgotMSISDN, #forgotInputFieldOtp, #inputFieldEnterPassword, #inputFieldReenterPassword, #inputWiMAXID, #inputEmailID, #inputRegisterMSISDN, #registerInputFieldOtp, #setPwdMsisdn, #unlockInputFieldOtp {
+	width:100%;
+	height: 3.2em;
+  background-color: #fafafa;
+  padding: 0.3em;
+  border: 1px solid #cccccc;
+	color: #000000;
+}
+#verifyButton, #verifyOtpButton, #verifyEcareButton, #forgotVerifyButton, #forgotVerifyOtpButton, #resetPassButton, #retrieveButton, #registerSubmitButton, #registerVerifyOtpButton, #setPwdMsisdnBtn, #unlockVerifyOtpButton, #LoginWithTDDBtn {
+  width: 100%;
+  height:3.2em;
+  background-color: #027fa3;
+	border-radius: 0;
+}
+#backButtonfromOptionScreen, #backButtonfromOtp, #backButtonfromECare, #backButtonfromForgotPasswordForm, #backButtonfromForgotGSMForm, #backButtonfromRetrieveWiMAXForm, #backButtonfromRegisterMobileForm {
+	width: 100%;
+  height: 3.2em;
+	color: #027fa3;
+  background-color: #fff;
+	border-radius: 0;
+}
+#numberChecking, #otpChecking, #passwordChecking, #forgotNumberChecking, #forgotOtpChecking, #passwordResetChecking, #passwordResetMismatch, #emptyPassword, #wimaxIDChecking, #emailIDChecking, #registerNumberChecking, #registerCheckErr, #registerOtpChecking {
+  display: none;
+  background-color: #ffffff;
+  border-color: #ffffff;
+	margin-bottom: 0%;
+}
+#mobileOTP, #emailOTP, #verifyEcarePass, #gsm, #wimax {
+  width: 101%;
+  height:3.6em;
+  background-color: #027fa3;
+	white-space: normal;
+	border-radius: 0;
+}
+#otpHeadingText, #forgotOtpHeadingText, #registerOtpHeadingText {
+  margin-bottom:0.2em;
+	margin-top:3%;
+	font-size:90%;
+}
+#ecareHeadingText {
+	margin-bottom:0.2em;
+	margin-top:3%;
+	font-size:70%;
+}
+#passwordHeadingText, #resetFormHeadingText, #reenterPasswordHeadingText, #enterWiMAXID, #enterEmailID {
+	margin-bottom:0.2em;
+	font-size:70%;
+}
+#newUserDivCol, #forgotPasswordDivCol {
+  padding: 0%;
+  margin-top: 0.75em;
+}
+#newRegistration {
+  margin: 0%;
+  color: #027fa3;
+  font-size: 12px;
+}
+#changeNumber {
+  margin: 0%;
+  color: #027fa3;
+  font-size: 12px;
+}
+#forgotPassword {
+  margin: 0%;
+	padding-top: 3%;
+  color: #027fa3;
+  font-size: 12px;
+	cursor: pointer;
+}
+#resendOTP, #resendForgotPassOTP, #resendRegisterOTP {
+  margin: 0%;
+	margin-top: 1%;
+  color: #027fa3;
+  font-size: 12px;
+	cursor: pointer;
+}
+#loginalert, #commonalert {
+	margin-bottom: 0%;
+}
+#backLogin {
+	width: 5%;
+	margin-left: 1%;
+	margin-right: 1%;
+}
+#optionsForm, #eCareForm, #otpForm, #forgotPassForm, #forgotGSMForm, #forgotGsmOtpForm, #resetForm, #retrieveWiMAXForm, #registerMobileForm, #registerOtpForm,#setresetirancellpwdForm, #unlockEcareOtpForm {
+  display: none;
+}
+
+#dropdownlang {
+	border-radius: 0;
+	background-color: #4b4b4b;
+	border-color: #fff;
+	color: #fff;
+}
+#portButton {
+	width: 100%;
+  background-color: #C8000A;
+	 font-size: 11px;
+    font-weight: bold;
+    color: #FFF;
+    text-transform: uppercase;
+    text-align: center;
+	border-radius: 0;
+	border: none;
+}
+
+#enterpriseButton {
+	width: 100%;
+  background-color: #ffbe00;
+	 font-size: 15px;
+    font-weight: bold;
+    color: #000;
+	margin-top:7%;
+    text-transform: uppercase;
+    text-align: center;
+	border-radius: 0;
+	border: none;
+}
+
+#portirancellDiv {
+	padding: 0%;
+}
+#HomeUsersText, #CorporateSolutionText {
+	color: #fff;
+	padding: 0%;
+	padding: 0em 0.2em;
+}
+#CoveragemapsText {
+	color: #fff;
+	padding: 0%;
+	padding: 0em 0.2em;
+	float: left;
+}
+#DownloadLinkText {
+	color: #fff;
+	padding: 0%;
+	padding: 0em 0.2em;
+	font-weight: 600;
+}
+#HomeUsersLink, #CorporateSolutionLink, #CoveragemapsLink, #mtnLogoLink, #portirancellLink, #DownloadLink, #languageLink, #setPassWord {
+	color: #fff;
+}
+#HomeUsersLink:hover, #CorporateSolutionLink:hover, #CoveragemapsLink:hover, #portirancellLink:hover, #DownloadLink:hover, #languageLink:hover, #setPassWord:hover {
+	color: #ffbe00;
+	font-weight: 700;
+}
+#mtnEcare:hover {
+	color: #ffbe00;
+}
+#portButton:hover {
+	font-weight: 700;
+}
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+#onlyMobile {
+	background-color: rgba(0,0,0,0.9);
+}
+html,body {
+  height:100%;
+	width:100%;
+	position:relative;
+}
+#background-carousel{
+	position:fixed;
+	width:100%;
+	height:100%;
+	z-index:-1;
+}
+.carousel, .carousel-inner {
+	width:100%;
+	height:100%;
+	z-index:0;
+	overflow:hidden;
+}
+.item {
+	width:100%;
+	height:100%;
+	background-position:center center;
+	background-size:cover;
+	z-index:0;
+}
+#content-wrapper {
+	position:absolute;
+	z-index:1 !important;
+	min-width:100%;
+	min-height:100%;
+}
+
+#recievePwdhead{
+	word-spacing: 0.2em;
+}
+
+#recievePwdText{
+	word-spacing: 0.2em;
+	line-height: 1.3em;
+}
+.telegram_icon{
+    width: 30px;
+    height: 30px;
+    margin-top: -20px;
+    margin-left: 5px;
+    margin-bottom: -15px;
+}

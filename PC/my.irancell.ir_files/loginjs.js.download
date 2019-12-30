@@ -1,0 +1,853 @@
+var countClicks = 0;
+var forgotOTPMSISDN = "";
+var resetGSMFlow = 0;
+function upCount() {
+	countClicks++;
+	if(countClicks>1) {
+    $('#resendOTP').hide();
+  } else {
+    $("#resendOTP").show();
+  }
+}
+
+$(document).ready(function() {
+	window.history.replaceState('login', '', '/');
+	if($("#language").text()=="en"){
+		bootbox.setLocale("en");
+	}else{
+		bootbox.setLocale("fa");
+	}
+  $("#inputFieldMSISDN").keypress(function(event){
+    if(event.keyCode == 13){
+      $("#verifyButton").click();
+			return false;
+    }
+	});
+  $("#inputFieldPassword").keypress(function(event){
+    if(event.keyCode == 13 || event.charCode == 13){
+      $("#verifyEcareButton").click();
+			return false;
+    }else if(event.keyCode == 8 || event.which == 8 || event.charCode == 8){
+		var num = $("#inputFieldPassword").val();
+		var n = num.substring(0,num.length-1);
+		$("#inputFieldPassword").val(n);
+		return false;
+	}
+		var ew = event.which;
+    if(48 <= ew && ew <= 57)
+        return true;
+    if(65 <= ew && ew <= 90)
+        return true;
+    if(97 <= ew && ew <= 122)
+        return true;
+    return false;
+  });
+	$("#inputFieldEnterPassword").keypress(function(event){
+		var ew = event.which;
+    if(48 <= ew && ew <= 57)
+        return true;
+    if(65 <= ew && ew <= 90)
+        return true;
+    if(97 <= ew && ew <= 122)
+        return true;
+    return false;
+  });
+	$("#inputFieldReenterPassword").keypress(function(event){
+    if(event.keyCode == 13){
+      $("#resetPassButton").click();
+			return false;
+    }
+		var ew = event.which;
+    if(48 <= ew && ew <= 57)
+        return true;
+    if(65 <= ew && ew <= 90)
+        return true;
+    if(97 <= ew && ew <= 122)
+        return true;
+    return false;
+  });
+  $("#inputFieldOtp").keypress(function(event){
+    if(event.keyCode == 13){
+      $("#verifyOtpButton").click();
+			return false;
+    }
+	});
+	$("#inputForgotMSISDN").keypress(function(event){
+		if(event.keyCode == 13){
+      $("#forgotVerifyButton").click();
+			return false;
+    }
+  });
+	$("#forgotInputFieldOtp").keypress(function(event){
+		if(event.keyCode == 13){
+      $("#forgotVerifyOtpButton").click();
+			return false;
+    }
+  });
+
+	$("#inputRegisterMSISDN").keypress(function(event){
+		if(event.keyCode == 13){
+      $("#registerSubmitButton").click();
+			return false;
+    }
+  });
+  
+  $("#setPwdMsisdn").keypress(function(event){
+	 
+	if(event.keyCode == 13){
+      $("#setPwdMsisdnBtn").click();
+			return false;
+    }	
+	 
+  });
+  
+	$("#registerInputFieldOtp").keypress(function(event){
+		if(event.keyCode == 13){
+      $("#registerVerifyOtpButton").click();
+			return false;
+    }
+  });
+  
+  $("#unlockInputFieldOtp").keypress(function(event){
+		if(event.keyCode == 13){
+      $("#unlockVerifyOtpButton").click();
+			return false;
+    }
+  });
+  
+  
+  $("#backButtonfromOptionScreen").click(function(){
+    hideAlert();
+  	$("#verifyForm").show();
+  	$("#optionsForm").hide();
+  });
+  $("#backButtonfromECare").click(function(){
+    hideAlert();
+    $("#eCareForm").hide();
+    $("#optionsForm").show();
+  });
+  
+  $("#backButtonfromResetScreen").click(function(){
+    hideAlert();
+    $("#setresetirancellpwdForm").hide();
+    $("#verifyForm").show();
+  });
+  
+  $("#backButtonfromForgotPasswordForm").click(function(){
+    hideAlert();
+    $("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+    $("#forgotPassForm").hide();
+    $("#eCareForm").show();
+  });
+  $("#backButtonfromForgotPasswordForm").click(function(){
+    hideAlert();
+    $("#forgotPassForm").hide();
+    $("#eCareForm").show();
+  });
+  $("#backButtonfromForgotGSMForm").click(function(){
+    hideAlert();
+    $("#forgotGSMForm").hide();
+    $("#forgotPassForm").show();
+  });
+  $("#backButtonfromRetrieveWiMAXForm").click(function(){
+    hideAlert();
+    if(resetGSMFlow == 1){
+      $("#home_panel_headerLogin").text($("#SetIrancellPassword").text());
+    } else {
+      $("#home_panel_headerLogin").text($("#forgotPassFormTitle").text());
+    }
+    $("#retrieveWiMAXForm").hide();
+    if(resetGSMFlow == 1){
+      $("#setresetirancellpwdForm").show();
+    } else {
+      $("#forgotPassForm").show();
+    }
+  });
+  $("#backButtonfromRegisterMobileForm").click(function(){
+    hideAlert();
+    $("#registerMobileForm").hide();
+    $("#optionsForm").show();
+  });
+
+	$(".dropdown-menu li a").click(function(){
+		var selText = $(this).text();
+		$(this).closest('div').find('button[data-toggle="dropdown"]').html(selText + ' <span class="caret"></span>');
+	});
+
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+
+	$("#alertclosebtn").on('click', function() {
+		hideAlert();
+	});
+
+	$("#inputFieldMSISDN").focus(function() {
+		hideAlert();
+	});
+
+	$("#verifyButton").click(function() {
+        _paq.push(["trackEvent", "Login", "Click Verify Button","First Step"]);
+		//if(navigator.onLine){
+			hideAlert();
+			var msisdn = $("#inputFieldMSISDN").val();
+			if (!msisdn || msisdn.length == 0) {
+				showAlert($("#numberChecking").text());
+			} else {
+				var data = "msisdn=" + msisdn + "&_csrf=" + $("#_csrf").val();
+				ajaxHelper("/api/getemailid", "POST", data, false, null, function(result) {
+					if (result.status == 0) {
+						if (result.service == "2" || result.MSISDN.startsWith("989411")) {
+							$("#mobileDiv").hide();
+						} else {
+							$("#mobileOTP").text($("#sendotptotext").text() + " " + msisdn);
+						}
+						if (result.email && result.email.length > 0) {
+							$("#emailOTP").text($("#sendotptotext").text() + " " + result.email);
+							$("#emailDiv").show();
+						} else {
+							$("#emailDiv").hide();
+						}
+	
+						$("#verifyForm").hide();
+						$("#optionsForm").show();
+					} else {
+						showAlert($("#numberChecking").text());
+					}
+				}, function(xhr, status, text) {
+					showAlert($("#numberChecking").text());
+				}, null);
+			}
+		/*}else{
+			
+			showAlert($("#offlinetext").text());
+		}*/
+
+	});
+  var otpType;
+
+	$("#mobileOTP").click(function() {
+        _paq.push(["trackEvent", "Login", "Click Mobile OTP Button","Second Step"]);
+
+        hideAlert();
+    otpType = "mobile";
+    sessionStorage.setItem("otpType", JSON.stringify(otpType));
+
+		var data = "msisdn=" + $("#inputFieldMSISDN").val() + "&_csrf=" + $("#_csrf").val();
+		ajaxHelper("/api/sendotptomsisdn", "POST", data, false, null, function(result) {
+			if (result.status == 0) {
+				$("#optionsForm").hide();
+				$("#inputFieldOtp").val("");
+				$("#otpForm").show();
+			} else {
+				AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+			}
+		}, function(xhr, status, text) {
+				AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+		}, null);
+	});
+
+	$("#emailOTP").click(function() {
+        _paq.push(["trackEvent", "Login", "Click Email OTP Button", "Second Step"]);
+
+        hideAlert();
+    otpType = "email";
+    sessionStorage.setItem("otpType", JSON.stringify(otpType));
+
+		var data = "msisdn=" + $("#inputFieldMSISDN").val()+"&_csrf=" + $("#_csrf").val();
+		ajaxHelper("/api/sendotptoemail", "POST", data, false, null, function(result) {
+			if (result.status == 0) {
+				$("#optionsForm").hide();
+				$("#inputFieldOtp").val("");
+				$("#otpForm").show();
+			} else {
+				AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+			}
+		}, function(xhr, status, text) {
+				AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+		}, null);
+	});
+  $("#resendOTP").click(function(){
+    var type = sessionStorage.getItem("otpType");
+    var Type = JSON.parse(type);
+    if (Type == "mobile") {
+      $("#mobileOTP").click();
+    }
+    else if (Type == "email") {
+      $("#emailOTP").click();
+    }
+  });
+
+	$("#inputFieldOtp").focus(function() {
+		hideAlert();
+	});
+
+	$("#verifyOtpButton").click(function() {
+        _paq.push(["trackEvent", "Login", "Click Verify OTP Button", "Third Step"]);
+
+        hideAlert();
+		var otp = $("#inputFieldOtp").val();
+		if (!otp || otp.length == 0) {
+			showAlert($("#mandatoryOTP").text());
+		} else {
+			var data = "otp=" + otp + "&_csrf=" + $("#_csrf").val();
+			ajaxHelper("/api/verifyotp", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+                    window.location.replace("/myaccounts?type=login");
+				} else if (result.status == -3) {
+					var primaryAction1 = "wrongOTPAction()";
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#wrongotpreentermsisdn").text()), $("#OK").text(), primaryAction1);
+				} else {
+					showAlert($("#otpChecking").text());
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#otpChecking").text());
+			}, null);
+		}
+	});
+
+	function wrongOTPAction() {
+		$("#otpForm").hide();
+		$("#inputFieldMSISDN").val("");
+		$("#verifyForm").show();
+	}
+
+	$("#verifyEcarePass").click(function() {
+        _paq.push(["trackEvent", "Login", "Click Login with Ecare Pass Button","Second Step"]);
+
+        hideAlert();
+		$("#inputFieldUsername").val($("#inputFieldMSISDN").val());
+		$("#optionsForm").hide();
+		$("#eCareForm").show();
+	});
+
+	$("#inputFieldUsername").focus(function() {
+		hideAlert();
+	});
+
+	$("#inputFieldPassword").focus(function() {
+		hideAlert();
+	});
+
+	$("#verifyEcareButton").click(function() {
+		hideAlert();
+
+		var msisdn = $("#inputFieldUsername").val();
+		var password = $("#inputFieldPassword").val();
+		if (!msisdn || msisdn.length == 0 || !password || password.length == 0) {
+			showAlert($("#passwordChecking").text());
+		} else {
+			var data = "msisdn=" + msisdn + "&password=" + encodeURIComponent(password) + "&_csrf=" + $("#_csrf").val();
+			ajaxHelper("/api/verifyecarepass", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+                    window.location.replace("/myaccounts?type=login");
+				} else if(result.status == -6){
+					$("#unlockEcareOtpForm").show();
+					$("#eCareForm").hide();
+					$("#home_panel_headerLogin").text($("#UnlockEcareAccount").text());
+					$("#OtpText").text($("#PleaseEnterOtpToUnlockPwd"));
+				} else if (result.status == -5) {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#BlockedTryAgainInFiveMins").text()), $("#OK").text());
+				} else {
+					showAlert($("#passwordChecking").text());
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#passwordChecking").text());
+			}, null);
+		}
+	});
+	
+$("#unlockVerifyOtpButton").click(function(){
+	var data = "otp=" + $("#unlockInputFieldOtp").val() + "&_csrf=" + $("#_csrf").val() + "&unlockotp=true";
+	ajaxHelper("/api/unlockverifyotp", "POST", data, false, null, function(result) {
+		if (result.status == 0) {
+			var primaryAction1 = "redirectToLogin()";
+			AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#YourAccountIsUnlockedSuccessfully").text()), $("#OK").text(), primaryAction1);
+		} else if (result.status == -2) {
+			var primaryAction1 = "redirectToLogin()";
+			AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#YourAccountIsNotLocked").text()), $("#OK").text(), primaryAction1);
+		} else {
+			var primaryAction1 = "redirectToLogin()";
+			AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#failedToUnlockYourAccount").text()), $("#OK").text(), primaryAction1);
+		}
+	}, function(xhr, status, text) {
+		showAlert($("#Invalid MSISDN").text());
+	}, null);
+	
+});
+
+
+
+$("#setPwdMsisdnBtn").click(function(){
+	
+		if($("#setPwdMsisdn").val() == ""){
+			showAlert($("#numberChecking").text());
+		} else {
+			var data = "msisdn=" + $("#setPwdMsisdn").val() + "&forgotpass=true&_csrf=" + $("#_csrf").val();
+			ajaxHelper("/api/setirancellpwd", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+					if(result.registered){
+						if(result.registered == true) {
+							var primaryAction1 = "alreadyRegisteredAction()";
+							AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#alreadyRegistered").text()), $("#OK").text(), primaryAction1);
+						}
+						else if(result.registered == "inprogress") {
+							
+							var primaryAction2 = "redirectToHome()";
+							ConfirmCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#TryinTwoMins").text()), $("#OK").text(), $("#NoGoBack").text(), primaryAction2);
+						}
+						else {
+							AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#registerCheckErr").text()), $("#OK").text());
+						}
+					} else if(result.service){
+						if(result.service == "2"){
+							$("#setresetirancellpwdForm").hide();
+							$("#retrieveWiMAXForm").show();
+						}
+					} else {
+						if(result.Type == "TDD"){
+							$("#OtpText").text($("#PleaseEnterOtpSentToRegEmail").text() + result.email);
+						} else {
+							$("#OtpText").text($("#PleaseEnterOtpSentToRegMSISDN").text() + result.mobile);
+						}
+						
+						$("#setresetirancellpwdForm").hide();
+						$("#forgotGsmOtpForm").show();
+					}
+				} else {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#registerCheckErr").text()), $("#OK").text());
+					
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#Invalid MSISDN").text());
+			}, null);
+		}
+	
+	});
+	
+
+	$("#gsm").click(function() {
+		hideAlert();
+		$("#inputForgotMSISDN").val($("#inputFieldUsername").val());
+		$("#forgotPassForm").hide();
+		$("#forgotGSMForm").show();
+	});
+
+	$("#inputForgotMSISDN").focus(function() {
+		hideAlert();
+	});
+
+	$("#forgotVerifyButton").click(function() {
+		hideAlert();
+		var msisdn = $("#inputForgotMSISDN").val();
+		if (msisdn.length == 10) {
+			msisdn = "98" + msisdn;
+		} else if (msisdn.length == 11) {
+			msisdn = "98" + msisdn.substring(1);
+		}
+		if (!msisdn || msisdn.length == 0) {
+			showAlert($("#forgotNumberChecking").text());
+		} else {
+			var data = "msisdn=" + msisdn + "&forgotpass=true"+"&_csrf=" + $("#_csrf").val();
+			ajaxHelper("/api/sendotptomsisdn", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+					forgotOTPMSISDN = msisdn;
+					$("#forgotGSMForm").hide();
+					$("#forgotGsmOtpForm").show();
+				} else {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+				}
+			}, function(xhr, status, text) {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#otpFailure").text()), $("#OK").text());
+			}, null);
+		}
+	});
+
+  $("#resendForgotPassOTP").click(function(){
+    $("#forgotVerifyButton").click();
+  });
+
+	$("#forgotInputFieldOtp").focus(function() {
+		hideAlert();
+	});
+
+	$("#forgotVerifyOtpButton").click(function() {
+		hideAlert();
+		var otp = $("#forgotInputFieldOtp").val();
+		if (!otp || otp.length == 0) {
+			showAlert($("#forgotOtpChecking").text());
+		} else {
+			if(resetGSMFlow == 1){
+				var data = "mobileno=" + $("#setPwdMsisdn").val() + "&otp=" + otp + "&_csrf=" + $("#_csrf").val();
+			} else {
+				var data = "mobileno=" + forgotOTPMSISDN + "&otp=" + otp + "&_csrf=" + $("#_csrf").val();
+			}
+			ajaxHelper("/api/verifyforgotpassotp", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+					$("#home_panel_headerLogin").text($("#resetPassFormTitle").text());
+					$("#forgotGsmOtpForm").hide();
+					$("#resetForm").show();
+				} else if (result.status == -3) {
+					var primaryAction1 = "forgotpassVerifyOtpAction()";
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#wrongotpreentermsisdn").text()), $("#OK").text(), primaryAction1);
+				} else {
+					showAlert($("#forgotOtpChecking").text());
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#forgotOtpChecking").text());
+			}, null);
+		}
+	});
+
+
+
+	$("#inputFieldEnterPassword").focus(function() {
+		hideAlert();
+	});
+
+	$("#inputFieldReenterPassword").focus(function() {
+		hideAlert();
+	});
+
+	$("#resetPassButton").click(function() {
+		hideAlert();
+		var password = $("#inputFieldEnterPassword").val();
+		var reenterPass = $("#inputFieldReenterPassword").val();
+		if (!password || password.length == 0) {
+			showAlert($("#emptyPassword").text());
+		} else if (password != reenterPass) {
+			showAlert($("#passwordResetMismatch").text());
+		} else {
+			if (((password.match(/[A-Z]/g) || password.match(/[a-z]/)) && password.match(/[\d]/g)) && (password.length >= 8) && (password.length <=32) && (!password.match(/^[!@#\$%\^\&*]/))) {
+				if(resetGSMFlow == 1){
+          var data = "mobileno="+$("#setPwdMsisdn").val() +"&password=" + encodeURIComponent(password) + "&_csrf=" + $("#_csrf").val();
+				} else {
+          var data = "mobileno="+forgotOTPMSISDN+"&password=" + encodeURIComponent(password) + "&_csrf=" + $("#_csrf").val();
+        }
+        
+        ajaxHelper("/api/resetgsmpass", "POST", data, false, null, function(result) {
+					if (result.status == 0) {
+						var primaryAction1 = "resetPassSuccessAction()";
+						AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#passwordResetSuccess").text()), $("#OK").text(),primaryAction1);
+					} else if(result.status == -3) {
+						AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify("Failed to reset password"), $("#OK").text());
+					} else {
+						AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#usernotRegistered").text()), $("#OK").text());
+					}
+				}, function(xhr, status, text) {
+						AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#passwordResetErr").text()), $("#OK").text());
+				}, null);
+			} else {
+				showAlert($("#passwordResetChecking").text());
+			}
+		}
+	});
+
+	$("#wimax").click(function() {
+		hideAlert();
+
+		$("#home_panel_headerLogin").text($("#retrieveWiMAXFormTitle").text());
+		$("#forgotPassForm").hide();
+		$("#retrieveWiMAXForm").show();
+	});
+
+	$("#inputWiMAXID").focus(function() {
+		hideAlert();
+	});
+
+	$("#inputEmailID").focus(function() {
+		hideAlert();
+	});
+
+	$("#retrieveButton").click(function() {
+		hideAlert();
+
+		var wimaxID = $("#inputWiMAXID").val();
+		var emailID = $("#inputEmailID").val();
+		if (!wimaxID || wimaxID.length == 0) {
+			showAlert($("#wimaxIDChecking").text());
+		} else if (!emailID || emailID.length == 0) {
+			showAlert($("#emailIDChecking").text());
+		} else {
+			var data = "msisdn=" + wimaxID + "&email=" + emailID;
+			ajaxHelper("/api/retrievewimaxpass", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+					var primaryAction1 = "retrieveWimaxPassAction()";
+          AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#retrieveWiMAXSuccess").text()), $("#OK").text(), primaryAction1);
+				} else {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#emailIDMismatch").text()), $("#OK").text());
+				}
+			}, function(xhr, status, text) {
+					AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#emailIDMismatch").text()), $("#OK").text());
+			}, null);
+		}
+	});
+
+
+
+	$("#inputRegisterMSISDN").focus(function() {
+		hideAlert();
+	});
+
+	$("#newRegistration").click(function() {
+		hideAlert();
+
+		var msisdn = $("#inputFieldMSISDN").val();
+		if (!msisdn || msisdn.length == 0) {
+			showAlert($("#registerNumberChecking").text());
+		} else {
+			var data = "msisdn=" + msisdn;
+			ajaxHelper("/api/isregistered", "POST", data, false, null, function(result) {
+				if (result.status == 0 && result.registered) {
+					if(result.registered == true) {
+						var primaryAction1 = "alreadyRegisteredAction()";
+						AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#alreadyRegistered").text()), $("#OK").text(), primaryAction1);
+					}
+					else if(result.registered == "inprogress") {
+						AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#TryinTwoMins").text()), $("#OK").text());
+					}
+					else {
+						AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#registerCheckErr").text()), $("#OK").text());
+					}
+				} else {
+					$("#registerMobileForm").hide();
+					$("#registerOtpForm").show();
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#registerCheckErr").text());
+			}, null);
+		}
+	});
+
+
+
+  $("#resendRegisterOTP").click(function(){
+    $("#registerSubmitButton").click();
+  });
+
+	$("#registerInputFieldOtp").focus(function() {
+		hideAlert();
+	});
+
+	$("#registerVerifyOtpButton").click(function() {
+		hideAlert();
+
+		var otp = $("#registerInputFieldOtp").val();
+		if (!otp || otp.length == 0) {
+			showAlert($("#registerOtpChecking").text());
+		} else {
+			var data = "otp=" + otp;
+			ajaxHelper("/api/registermsisdn", "POST", data, false, null, function(result) {
+				if (result.status == 0) {
+					var primaryAction1 = "RegistrationSuccessfulAction()";
+          AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#RegistrationSuccessful").text()), $("#OK").text(), primaryAction1);
+				} else {
+					showAlert($("#registerOtpChecking").text());
+				}
+			}, function(xhr, status, text) {
+				showAlert($("#registerOtpChecking").text());
+			}, null);
+		}
+	});
+    $('#sulButton').click(function () {
+        ajaxHelper("/api/sulauthentication", "POST", null, false, null, function (result) {
+            window.open(result, 'SULPopup', "width=500,height=300,top=100,left=500")
+        }, function (xhr, status, text) {
+            showAlert('Somthing is wrong \n');
+            // alert('Somthing is wrong \n' + text)
+        }, null);
+    })
+});
+
+function redirectToHome(){
+	window.location.href = "/";
+}
+
+function newRegSetPass(){
+	
+	resetGSMFlow = 1;
+	$("#home_panel_headerLogin").text($("#SetIrancellPassword").text());
+	$("#verifyForm").hide();
+	$("#findMyNumberForm").hide();
+	$("#setresetirancellpwdForm").show();
+
+  	$("#optionsForm").hide();
+  	$("#eCareForm").hide();
+	
+}
+
+function findMyNumber() {
+
+    resetGSMFlow = 1;
+    $("#home_panel_headerLogin").text($("#findMyNumber").text());
+    $("#verifyForm").hide();
+    $("#setresetirancellpwdForm").hide();
+	
+	$("#TDDFormHead").show();
+	$("#TDDFormContent").show();
+	$("#TDDList").hide();
+	
+    var form = $("#findMyNumberForm");
+    form.show();
+    form.find("button").off("click").on("click", function (event) {
+        event.preventDefault();
+
+        var data = {};
+        var serializedArray = form.serializeArray();
+        serializedArray.forEach(function (value, index) {
+            if (value.value.length !== 0) {
+                data[value.name] = value.value;
+            }
+        });
+
+        if (typeof data.imei !== "undefined" && typeof data.nationalId !== "undefined") {
+            $.ajax({
+                method: "POST",
+                url: "/api/findmynumber",
+                data: JSON.stringify(data),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+
+                    if (result.msisdn !== null && typeof result.msisdn !== "undefined") {
+
+                        var verifyForm = $("#verifyForm");
+                        verifyForm.find("#inputFieldMSISDN").val(result.msisdn);
+                        /* AlertCustomModal(JSON.stringify("<center><img src='/images/successGreen.png' id='modalIconMessage'></center>"), JSON.stringify($("#findMyNumberSuccess").text().replace("<>", result.msisdn)), $("#OK").text(), function () {
+                            closeLastOpenedModal(function () {
+                                showVerifyForm();
+                            });
+                        }, true); */
+						$("#successMsg").html($("#findMyNumberSuccess").text().replace("<>", ""));
+						$("#successNo").html(result.msisdn);
+						$("#TDDFormHead").hide();
+						$("#TDDFormContent").hide();
+						$("#TDDList").show();
+                    } else {
+                        AlertCustomModal(JSON.stringify("<center><img src='/images/warningRed.png' id='modalIconMessage'></center>"), JSON.stringify($("#findMyNumberFailure").text()), $("#OK").text(), function () {
+                            closeLastOpenedModal(function () {
+
+                            });
+                        }, true);
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
+}
+
+function showVerifyForm() {
+    $("#setresetirancellpwdForm").hide();
+    $("#findMyNumberForm").hide();
+    $("#verifyForm").show();
+	
+	
+    $("#home_panel_headerLogin").text($("#LoginHeading").text());
+}
+
+function RegistrationSuccessfulAction() {
+	$("#inputFieldUsername").val($("#inputRegisterMSISDN").val());
+	$("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+	$("#registerOtpForm").hide();
+	$("#eCareForm").show();
+}
+
+function changeNumber() {
+	hideAlert();
+
+	$("#verifyForm").show();
+	$("#optionsForm").hide();
+}
+
+function forgotPassword() {
+	hideAlert();
+
+	$("#home_panel_headerLogin").text($("#forgotPassFormTitle").text());
+	$("#eCareForm").hide();
+	$("#forgotPassForm").show();
+}
+
+function newRegistration() {
+	hideAlert();
+
+	/*$("#inputRegisterMSISDN").val($("#inputFieldMSISDN").val());*/
+	$("#optionsForm").hide();
+	$("#registerOtpForm").show();
+}
+
+function changeLanguage(lang) {
+	$("#lang").val(lang);
+	$("#langForm").submit();
+}
+
+function hideAlert() {
+	$("#commonalert").hide();
+}
+
+function showAlert(text) {
+	$("#commonalerttext").text(text);
+	$("#commonalert").show();
+}
+/*
+var OS_Name = navigator.appVersion;
+if (OS_Name.indexOf("Win") != -1) {
+  var html;
+	var minihtml;
+  html= "<a id='DownloadLink' href='https://play.google.com/store/apps/details?id=com.mtni.myirancell' target='_blank'>" + $("#DOWNLOADAPP").text() + "</a>";
+	minihtml= "<a style='color:#fff;' href='https://play.google.com/store/apps/details?id=com.mtni.myirancell' target='_blank'><b>" + $("#DOWNLOADAPP").text() + "</b></a>";
+} else if (OS_Name.indexOf("Mac") != -1) {
+  var html;
+	var minihtml;
+  html= "<a id='DownloadLink' href='https://itunes.apple.com/us/app/myirancell/id627980529' target='_blank'>" + $("#DOWNLOADAPP").text() + "</a>";
+	minihtml= "<a style='color:#fff;' href='https://itunes.apple.com/us/app/myirancell/id627980529' target='_blank'><b>" + $("#DOWNLOADAPP").text() + "</b></a>";
+} else {
+  var html;
+	var minihtml;
+  html= "<a id='DownloadLink' href='https://play.google.com/store/apps/details?id=com.mtni.myirancell' target='_blank'>" + $("#DOWNLOADAPP").text() + "</a>";
+	minihtml= "<a style='color:#fff;' href='https://play.google.com/store/apps/details?id=com.mtni.myirancell' target='_blank'><b>" + $("#DOWNLOADAPP").text() + "</b></a>";
+}
+$("#onlyMobile").append(minihtml);
+$("#DownloadLink").append(html);
+*/
+function closeOneButtonModal() {
+	$("#myModalOneButton").modal("hide");
+}
+
+function resetPassSuccessAction() {
+	window.location.href = "/";
+	/*
+	alert("hi");
+	closeOneButtonModal();
+	$("#inputFieldUsername").val($("#inputForgotMSISDN").val());
+	$("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+	$("#resetForm").hide();
+	$("#eCareForm").show();
+	*/
+}
+function retrieveWimaxPassAction() {
+	$("#inputFieldUsername").val($("#inputWiMAXID").val());
+	$("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+	$("#retrieveWiMAXForm").hide();
+	$("#eCareForm").show();
+}
+
+function alreadyRegisteredAction() {
+	$("#inputFieldUsername").val($("#inputRegisterMSISDN").val());
+	$("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+	$("#registerOtpForm").hide();
+	$("#eCareForm").show();
+}
+
+function forgotpassVerifyOtpAction() {
+	$("#home_panel_headerLogin").text($("#eCareFormTitle").text());
+	$("#forgotGsmOtpForm").hide();
+	$("#inputFieldMSISDN").val("");
+	$("#verifyForm").show();
+}
+
+function redirectToLogin(){
+	window.location.href = "/";
+}
